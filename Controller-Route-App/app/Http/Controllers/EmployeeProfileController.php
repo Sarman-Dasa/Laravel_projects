@@ -13,7 +13,7 @@ class EmployeeProfileController extends Controller
      */
     public function index()
     {
-        //
+        return "Index Function Call...";
     }
 
     /**
@@ -23,7 +23,7 @@ class EmployeeProfileController extends Controller
      */
     public function create()
     {
-        //
+        return "Create Function Call";
     }
 
     /**
@@ -34,7 +34,7 @@ class EmployeeProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return "Store Function call";
     }
 
     /**
@@ -45,7 +45,7 @@ class EmployeeProfileController extends Controller
      */
     public function show($id)
     {
-        //
+       return "Show Function call.";
     }
 
     /**
@@ -56,7 +56,7 @@ class EmployeeProfileController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "edit Function Call";
     }
 
     /**
@@ -68,7 +68,7 @@ class EmployeeProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return "Update Function call";
     }
 
     /**
@@ -79,6 +79,6 @@ class EmployeeProfileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return "Destroy function call";
     }
 }
