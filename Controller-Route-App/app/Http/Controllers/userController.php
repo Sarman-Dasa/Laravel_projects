@@ -16,4 +16,9 @@ class userController extends Controller
     {
         return "My Name is: ".$name;
     }
+
+    function create()
+    {
+        return view('user');
+    }
 }
