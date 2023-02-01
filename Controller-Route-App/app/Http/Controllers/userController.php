@@ -21,4 +21,9 @@ class userController extends Controller
     {
         return view('user');
     }
+
+    function print(Request $request)
+    {
+        return $request->input("username");
+    }
 }
