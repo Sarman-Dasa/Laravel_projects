@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::get('/', function () {
 
 Route::get("/mycontroller",[userController::class,'index']);
 Route::get("/mycontroller/{name}",[userController::class,'getName']);
+
+Route::resource('Employee', EmployeeProfileController::class);
