@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeProfileController extends Controller
@@ -13,7 +14,7 @@ class EmployeeProfileController extends Controller
      */
     public function index()
     {
-        return "Index Function Call...";
+        return Employee::all();
     }
 
     /**
