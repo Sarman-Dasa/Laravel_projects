@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User Data</title>
-</head>
-<body>
+@extends('layout.main')
+@section('title','User Data') 
+@section('page-data')
     <form action="" method="post">
         @csrf
         <table border="2" align="center">
@@ -38,5 +32,14 @@
             </tr>
         </table>
     </form>
-</body>
-</html>
+@endsection
+{{-- overwrite data --}}
+{{-- @section('default-contect')
+<h2>This is Home page text </h2>
+@endsection --}}
+
+{{-- Append Data --}}
+@section('default-contect')
+@parent
+<h2>This is Default text from layout</h2>
+@show
