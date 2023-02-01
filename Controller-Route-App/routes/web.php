@@ -23,5 +23,6 @@ Route::get("/mycontroller",[userController::class,'index']);
 Route::get("/mycontroller/{name}",[userController::class,'getName']);
 
 Route::get('/user',[userController::class,'create']);
+Route::post("/user",[userController::class,'print']);
 
 Route::resource('Employee', EmployeeProfileController::class);
