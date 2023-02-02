@@ -2,9 +2,16 @@
 @section('content')
     <div class="content text-center">
         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            data-bs-whatever="@getbootstrap">Open modal for @getbootstrap</button>
+            data-bs-whatever="@getbootstrap">Add Employee</button>
     </div>
-        <form action="" method="POST">
+ 
+        <form action="{{route('employee.store')}}" method="POST" enctype="multipart/form-data">
+         <pre>
+            @php
+                print_r($errors->all());   
+           @endphp
+         </pre>
+            @csrf
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
 
@@ -35,7 +42,7 @@
                                     </div>
                                     <div class="col-md-6 ms-auto">
                                         <label for="employeeDepartmentName" class="col-form-label">Department Name</label>
-                                        <input type="text" class="form-control" id="employeeDepartmentName">
+                                        <input type="text" class="form-control" name="employeeDepartmentName" id="employeeDepartmentName">
                                     </div>
                                 </div>
 
@@ -46,15 +53,15 @@
                                             id="employeeHiredate">
                                     </div>
                                     <div class="col-md-6 ms-auto">
-                                        <label for="employeebirthdate" class="col-form-label">Birthdate:</label>
-                                        <input type="date" class="form-control" id="employeebirthdate">
+                                        <label for="employeebirthdate" class="col-form-label">Birthdate</label>
+                                        <input type="date" class="form-control" name="employeebirthdate" id="employeebirthdate">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="employeeSalary" class="col-form-label">Salary </label>
-                                        <input type="text" class="form-control" id="employeeSalary">
+                                        <input type="text" class="form-control" name="employeeSalary" id="employeeSalary">
                                     </div>
                                     <div class="col-md-6 ms-auto">
 

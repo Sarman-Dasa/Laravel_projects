@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\employeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('create');
+// });
+
+Route::get('employee/delete/{id}',[employeeController::class,'destroy']);
+Route::resource('employee',employeeController::class);
