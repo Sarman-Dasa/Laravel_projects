@@ -18,5 +18,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('create');
 // });
 
-Route::get('employee/delete/{id}',[employeeController::class,'destroy']);
+
 Route::resource('employee',employeeController::class);
+Route::get('employee/deletedData/restore',[employeeController::class,'deletedData'])->name('employee.restoreDataShow');
+Route::get('employee/deletedData/restore/{id}',[employeeController::class,'restoreData'])->name('employee.restoreData');
+Route::delete('employee/deletedData/delete/{id}',[employeeController::class,'permanentDelete'])->name('employee.permanentDelete');
+

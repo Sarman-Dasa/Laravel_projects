@@ -13,20 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
-            $table->id();
-            $table->string("employeeName",20);
-            $table->string("employeeEmail",30)->unique();
-            $table->bigInteger("employeeMobileNo")->unique();
-            $table->string("employeeDepartmentName",30);
-            $table->date("employeeHiredate");
-            $table->date("employeebirthdate");
-            $table->enum("employeeGender",['Male','Female','Other']);
-            $table->integer("employeeSalary");
-            $table->string('employeeImage',30)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if(!Schema::hasTable('employees')){
+            Schema::create('employees', function (Blueprint $table) {
+                $table->id();
+                $table->string("employee_name",20);
+                $table->string("employee_email",30)->unique();
+                $table->bigInteger("employee_mobile_number")->unique();
+                $table->string("employee_department_name",30);
+                $table->date("employee_hiredate");
+                $table->date("employee_birthdate");
+                $table->enum("employee_gender",['Male','Female','Other']);
+                $table->integer("employee_salary");
+                $table->string('employee_image',30)->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }      
     }
 
     /**
