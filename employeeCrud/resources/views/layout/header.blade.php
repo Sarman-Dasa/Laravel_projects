@@ -10,13 +10,15 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Add Employee</a>
+            <a class="nav-link" href="{{route('employee.index')}}">Add Employee</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Show Data</a>
+            <a class="nav-link" href="{{route('employee.restoreDataShow')}}">Restore Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('employee.index')}}">Show Data</a>
           </li>
         </ul>
-
       </div>
     </div>
 </nav>

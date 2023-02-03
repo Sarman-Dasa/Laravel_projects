@@ -33,19 +33,19 @@
                                 <td>{{$item->employee_birthdate}}</td>
                                 <td>{{$item->employee_gender}}</td>
                                 <td>{{$item->employee_salary}}</td>
-                               <td><img src="{{asset('/public/images/'.$item->employee_image)}}" alt=""></td>
+                               
                                 <td>
-                                    <form action="{{route('employee.edit',$item->id)}}" method="POST">
+                                    <form action="{{route('employee.restoreData',$item->id)}}" method="POST">
                                         @csrf
                                         @method('GET')
-                                            <input type="submit" value="Edit" name="" class="btn btn-info">
+                                            <input type="submit" value="Restore" name="" class="btn btn-info">
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{{route('employee.destroy',$item->id)}}" method="POST">
+                                    <form action="{{route('employee.permanentDelete',$item->id)}}" method="POST">
                                         @csrf
                                         @method("Delete")
-                                            <input type="submit" value="Delete" name="delete" class="btn btn-danger">
+                                            <input type="submit" value="Permanent Delete" name="permanentdelete" class="btn btn-danger">
                                     </form>
                                 </td>
                            </tr>
