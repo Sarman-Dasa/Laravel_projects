@@ -2,7 +2,6 @@
 @section('content')
     <div class="container mt-5">
         <div class="table-responsive">
-            @include('create')
            
             <table class="table table-striped table-hover ">
                 <thead>
