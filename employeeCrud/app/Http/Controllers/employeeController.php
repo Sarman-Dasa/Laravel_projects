@@ -39,14 +39,15 @@ class employeeController extends Controller
     public function store(Request $request)
     {
 
-        // Form Data Validation
-
+        $todayDate = date('d/m/Y');
+        // Form Data Validation 
+    
         $request->validate([
             'employeeName'=>'required',
             'employee_email'=>'required|email|unique:Employees',
             'employee_mobile_number'=>'required|numeric|digits:10|unique:Employees',
             'employeeDepartmentName'=>'required|alpha',
-            'employeeHiredate'=>'required',
+            'employeeHiredate'=>'before_or_equal:'.$todayDate,
             'employeebirthdate'=>'required',
             'employeeGender'=>'required',
             'employeeSalary'=>'required|numeric',
@@ -56,7 +57,7 @@ class employeeController extends Controller
         // Save Data 
         //  $request->file('employeeImage')->store('images');
         $extension = $request->file('employeeImage')->extension();
-        $path = $request->file('employeeImage')->storeAs('images',time().".".$extension);
+        $path = $request->file('employeeImage')->storeAs('images',time().".".$extension,'public');
 
         $employee = new Employee();
         $employee->employee_name = $request->employeeName;
@@ -67,7 +68,7 @@ class employeeController extends Controller
         $employee->employee_hiredate = $request->employeeHiredate;
         $employee->employee_gender = $request->employeeGender;
         $employee->employee_salary = $request->employeeSalary;
-        $employee->employee_image = $path;
+        $employee->employee_image = '/storage/'.$path;
 
         $employee->save();
         return redirect()->route('employee.index');
@@ -118,8 +119,10 @@ class employeeController extends Controller
             'employeeImage'=>'required'
         ]); 
 
+      
+       
         $extension = $request->file('employeeImage')->extension();
-        $path = $request->file('employeeImage')->storeAs('public/images',time().".".$extension);
+        $path = $request->file('employeeImage')->storeAs('images',time().".".$extension,'public');
         $employee = Employee::find($id);
         $employee->employee_name = $request->employeeName;
         $employee->employee_email = $request->employee_email;
@@ -129,9 +132,9 @@ class employeeController extends Controller
         $employee->employee_hiredate = $request->employeeHiredate;
         $employee->employee_gender = $request->employeeGender;
         $employee->employee_salary = $request->employeeSalary;
-        $employee->employee_image = $path;
-        $employee->save();
-        return redirect()->route('employee.index');
+        $employee->employee_image = '/storage/'.$path;
+       $employee->save();
+       return redirect()->route('employee.index');
     }
 
     /**
