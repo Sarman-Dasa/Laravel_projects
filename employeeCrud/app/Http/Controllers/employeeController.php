@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
@@ -16,8 +17,8 @@ class employeeController extends Controller
     public function index()
     {
         $data = Employee::all();
-     
-        return view('displayData',['data'=>$data]);
+        $departmentName = Department::all();
+        return view('displayData',['data'=>$data,'departmentName'=>$departmentName]);
     }
 
     /**
@@ -27,6 +28,7 @@ class employeeController extends Controller
      */
     public function create()
     {
+      
         return view('create');
     }
 
@@ -46,7 +48,7 @@ class employeeController extends Controller
             'employeeName'=>'required',
             'employee_email'=>'required|email|unique:Employees',
             'employee_mobile_number'=>'required|numeric|digits:10|unique:Employees',
-            'employeeDepartmentName'=>'required|alpha',
+            'department_id'=>'required|numeric',
             'employeeHiredate'=>'before_or_equal:'.$todayDate,
             'employeebirthdate'=>'required',
             'employeeGender'=>'required',
@@ -58,12 +60,11 @@ class employeeController extends Controller
         //  $request->file('employeeImage')->store('images');
         $extension = $request->file('employeeImage')->extension();
         $path = $request->file('employeeImage')->storeAs('images',time().".".$extension,'public');
-
         $employee = new Employee();
         $employee->employee_name = $request->employeeName;
         $employee->employee_email = $request->employee_email;
         $employee->employee_mobile_number = $request->employee_mobile_number;
-        $employee->employee_department_name = $request->employeeDepartmentName;
+        $employee->department_id = $request->department_id;
         $employee->employee_birthdate = $request->employeebirthdate;
         $employee->employee_hiredate = $request->employeeHiredate;
         $employee->employee_gender = $request->employeeGender;
@@ -82,7 +83,7 @@ class employeeController extends Controller
      */
     public function show($id)
     {
-        return "Show Called";
+        return Employee::find($id)->department;
     }
 
     /**
@@ -94,7 +95,8 @@ class employeeController extends Controller
     public function edit($employee)
     {   
         $data = Employee::find($employee);
-        return view('update',compact('data'));
+        $departmentName = Department::all();
+        return view('update',compact('data','departmentName'));
     }
 
     /**
@@ -111,7 +113,7 @@ class employeeController extends Controller
             'employeeName'=>'required',
             'employee_email'=>'required|email',
             'employee_mobile_number'=>'required|numeric|digits:10',
-            'employeeDepartmentName'=>'required|alpha',
+            'department_id'=>'required|numeric',
             'employeeHiredate'=>'required',
             'employeebirthdate'=>'required',
             'employeeGender'=>'required',
@@ -127,7 +129,7 @@ class employeeController extends Controller
         $employee->employee_name = $request->employeeName;
         $employee->employee_email = $request->employee_email;
         $employee->employee_mobile_number = $request->employee_mobile_number;
-        $employee->employee_department_name = $request->employeeDepartmentName;
+        $employee->department_id = $request->department_id;
         $employee->employee_birthdate = $request->employeebirthdate;
         $employee->employee_hiredate = $request->employeeHiredate;
         $employee->employee_gender = $request->employeeGender;

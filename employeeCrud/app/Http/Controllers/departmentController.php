@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -76,11 +78,10 @@ class departmentController extends Controller
         //--------------//skip //-----------------//
 
        // $data =  DB::table('departments')->skip(5)->take(5)->get();
+        
 
         return view('Department.DisplayData',['data'=>$data]);
     }
-
-
     
     /**
      * Show the form for creating a new resource.
@@ -100,7 +101,8 @@ class departmentController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        Department::create($request->all());
+        return redirect()->route('department.index');
     }
 
     /**
@@ -111,7 +113,10 @@ class departmentController extends Controller
      */
     public function show($id)
     {
-        //
+       $data =  Department::find($id)->employee;
+       // $data =  Department::find($id)->newEmployee;
+      // $data = Department::find($id)->workingemployee;
+        return $data;
     }
 
     /**

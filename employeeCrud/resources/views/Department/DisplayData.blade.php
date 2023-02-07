@@ -2,12 +2,11 @@
 @section('content')
     <div class="container mt-5">
         <div class="table-responsive">
-            @include('create')
-           
+            @include('department.create')
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
-                    <th colspan="6" class="text-center table-dark">Employee Data</th>
+                    <th colspan="6" class="text-center table-dark">Department Data</th>
                 </tr>
                 <tr class="table-info">
                     <th>ID</th>
@@ -44,7 +43,7 @@
                         @endforeach
                     </tr>
                     <tr>
-                        <th colspan="6" class="text-center table-dark">Total {{count($data)}} Employee(s) </th>
+                        <th colspan="6" class="text-center table-dark">Total {{count($data)}} Department(s) </th>
                     </tr>
                 </tbody>
             </table>

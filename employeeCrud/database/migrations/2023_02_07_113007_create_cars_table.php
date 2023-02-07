@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('employee_image',100)->change();
+        Schema::create('cars', function (Blueprint $table) {
+            $table->id();
+            $table->string('model',20);
+            $table->unsignedBigInteger('mechanic_id');
+            $table->timestamps();
+            $table->foreign('mechanic_id')->references('id')->on('mechanics')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('employee_image',30)->nullable();
-        });
+        Schema::dropIfExists('cars');
     }
 };

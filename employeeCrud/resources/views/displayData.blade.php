@@ -29,7 +29,7 @@
                                 <td>{{$item->employee_name}}</td>
                                 <td>{{$item->employee_email}}</td>
                                 <td>{{$item->employee_mobile_number}}</td>
-                                <td>{{$item->employee_department_name}}</td>
+                                <td>{{$item->department_id}}</td>
                                 <td>{{$item->employee_hiredate}}</td>
                                 <td>{{$item->employee_birthdate}}</td>
                                 <td>{{$item->employee_gender}}</td>

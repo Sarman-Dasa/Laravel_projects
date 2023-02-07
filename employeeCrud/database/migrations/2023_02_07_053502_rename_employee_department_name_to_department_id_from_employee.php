@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->string('employee_image',100)->change();
+            $table->renameColumn('employee_department_name','department_id');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->string('employee_image',30)->nullable();
+            $table->renameColumn('department_id','employee_department_name');
         });
     }
 };
