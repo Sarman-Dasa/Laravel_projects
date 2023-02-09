@@ -25,15 +25,16 @@ class SingerController extends Controller
 
     public function show()
     {
-        $data = Singer::all();
+        $data = Singer::withCount('songs')->get();
         $songname = Song::all();
+        //return $data;
         return view('singerSong.showSingersData',compact('data','songname'));
     }
 
     public function showSinger($id)
     {
         $data = Song::find($id)->singers;
-        $songname = Song::all();
+       // $songname = Song::all();
         return view('singerSong.showSingersData',compact('data','songname'));
     }
 }
