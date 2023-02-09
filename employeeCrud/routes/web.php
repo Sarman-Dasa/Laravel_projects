@@ -13,6 +13,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SingerController;
 use App\Http\Controllers\SongController;
+use App\Http\Controllers\studentTeacherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,5 +89,20 @@ Route::get('patientprofile/{id}',[DoctorController::class,'profile'])->name('pat
 
 Route::get('post/add',[PostController::class,'addPost']);
 Route::get('post/{id}',[PostController::class,'showPost'])->name('showPost');
+
+// ------------- MANY TO MANY --------------//
+
+//Add  Course
+Route::get('course/add',[studentTeacherController::class,'addCourse'])->name('course.create');
+Route::post('course',[studentTeacherController::class,'storeCourse'])->name('course.store');
+
+// Add Student Course 
+
+Route::get('student/add',[studentTeacherController::class,'addStudentCourse'])->name('student.create');
+Route::post('student',[studentTeacherController::class,'storeStudentCourse'])->name('student.store');
+
+//show student subject
+Route::get('student/show/{id}',[studentTeacherController::class,'showStudentSubject'])->name('showstudentCourse');
+
 
 

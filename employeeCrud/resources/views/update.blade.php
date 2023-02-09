@@ -53,7 +53,11 @@
                                     <select name="department_id" id="department_id" class="form-select">
                                         <option value="-1" disabled selected>---Select Department---</option>
                                         @foreach ($departmentName as $name)
-                                            <option value="{{ $name->id }}">{{ $name->department_name }}</option>
+                                            @if($data->department_id == $name->id)
+                                                <option value="{{ $name->id }}" selected>{{ $name->department_name }}</option>
+                                            @else
+                                                <option value="{{ $name->id }}">{{ $name->department_name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                     <span class="text-danger fs-20">
@@ -67,9 +71,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="employeeHiredate" class="col-form-label">Hiredate</label>
-                                    <input type="date" name="employeeHiredate" class="form-control" id="employeeHiredate"
-                                        value="{{ $data->employee_hiredate }}">
-
+                                    <input type="date" name="employeeHiredate" class="form-control" id="employeeHiredate" value="{{ date('Y-m-d',strtotime($data->employee_hiredate)) }}">
                                     <span class="text-danger fs-20">
                                         @error('employeeHiredate')
                                             {{ $message }}
@@ -80,6 +82,7 @@
                                     <label for="employeebirthdate" class="col-form-label">Birthdate</label>
                                     <input type="date" class="form-control" name="employeebirthdate"
                                         id="employeebirthdate" value="{{ $data->employee_birthdate }}">
+                                      
                                     <span class="text-danger fs-20">
                                         @error('employeebirthdate')
                                             {{ $message }}
