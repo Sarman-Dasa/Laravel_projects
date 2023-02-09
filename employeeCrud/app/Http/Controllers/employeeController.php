@@ -16,9 +16,10 @@ class employeeController extends Controller
      */
     public function index()
     {
-        $data = Employee::all();
+        $data = Employee::with('department')->get();
         $departmentName = Department::all();
-        return view('displayData',['data'=>$data,'departmentName'=>$departmentName]);
+       // return $data;
+         return view('displayData',['data'=>$data,'departmentName'=>$departmentName]);
     }
 
     /**
@@ -40,20 +41,19 @@ class employeeController extends Controller
      */
     public function store(Request $request)
     {
-
-        $todayDate = date('d/m/Y');
+        $todayDate = date('Y/m/d');
         // Form Data Validation 
     
         $request->validate([
-            'employeeName'=>'required',
-            'employee_email'=>'required|email|unique:Employees',
-            'employee_mobile_number'=>'required|numeric|digits:10|unique:Employees',
-            'department_id'=>'required|numeric',
-            'employeeHiredate'=>'before_or_equal:'.$todayDate,
-            'employeebirthdate'=>'required',
-            'employeeGender'=>'required',
-            'employeeSalary'=>'required|numeric',
-            'employeeImage'=>'required'
+            'employeeName'          => 'required',
+            'employee_email'        => 'required|email|unique:Employees',
+            'employee_mobile_number'=> 'required|numeric|digits:10|unique:Employees',
+            'department_id'         => 'required|numeric',
+            'employeeHiredate'      => 'before_or_equal:'.$todayDate,
+            'employeebirthdate'     => 'required',
+            'employeeGender'        => 'required',
+            'employeeSalary'        => 'required|numeric',
+            'employeeImage'         => 'required'
         ]); 
 
         // Save Data 
