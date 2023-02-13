@@ -11,9 +11,16 @@ use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\requestresponseController;
 use App\Http\Controllers\SingerController;
 use App\Http\Controllers\SongController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\studentTeacherController;
+use App\Mail\OrderShipped;
+use App\Mail\sendImage;
+use Doctrine\DBAL\Driver\Middleware;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,13 +34,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('create');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 
 //Employee Controller
-Route::resource('employee',employeeController::class);
+//Route::resource('employee',employeeController::class);
+
+Route::group(['middleware'=>['auth','verified']],function(){
+   
+});
+
 Route::get('employee/deletedData/restore',[employeeController::class,'deletedData'])->name('employee.restoreDataShow');
 Route::get('employee/deletedData/restore/{id}',[employeeController::class,'restoreData'])->name('employee.restoreData');
 Route::delete('employee/deletedData/delete/{id}',[employeeController::class,'permanentDelete'])->name('employee.permanentDelete');
@@ -106,3 +118,86 @@ Route::get('student/show/{id}',[studentTeacherController::class,'showStudentSubj
 
 
 
+//Route For Middleware 
+
+
+//check user Age for Global
+Route::get('users', function () {
+    return view('middlewareFile.checkAge');
+})->name('addAge')->middleware('auth');
+
+// Route::POST('users', function () {
+//     return "Hello";
+// })->name('checkAge');
+
+//GroupMiddleware 
+
+Route::group(['middleware'=>['userAge']],function(){
+    Route::POST('users', function () {
+        return "Hello from GroupMiddleware";
+    })->name('checkAge');
+});
+
+ // RouteMiddleware
+
+ Route::post('users', function () {
+    return "Hello, via routeMiddleware.";
+ })->name('checkAge')->middleware('mwcheckAge');
+
+ //Login Registration
+// Route::get('create',[studentTeacherController::class,'create'])->name('user.create');
+// Route::post('/',[studentTeacherController::class,'store'])->name('User.store');  
+// Route::get('login',[studentTeacherController::class,'login'])->name('login');
+// Route::post('login',[studentTeacherController::class,'isValid'])->name('user.login');
+Route::group(['prefix'=>'user','middleware'=>['auth']],function(){
+
+});
+
+//Request Response
+
+Route::get('reqres',[requestresponseController::class,'index']);
+
+
+//Send Mail 
+
+Route::get('send-mail',function()
+{
+    $mailData = [
+        'name' => "test Mail",
+        'dob' => '12/03/2023',
+    ];
+
+    Mail::to("hello@example.com")->send(new OrderShipped($mailData));
+    dd("Mail Sended..");
+});
+
+Route::get('send-image',function()
+{
+    $userData = [
+        'name' => "my name",
+        'city' => 'Surat',
+        'image' => '/app/images/1675662544.jpg',
+    ];
+
+    Mail::to("hello@example.com")->send(new sendImage($userData));
+    dd("Mail Sended..");
+});
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::resource('employee',employeeController::class);
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+// require __DIR__.'/auth.php';
