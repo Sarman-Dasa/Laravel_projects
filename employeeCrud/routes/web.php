@@ -4,6 +4,7 @@ use App\Http\Controllers\CarController;
 use App\Http\Controllers\departmentController;
 use App\Http\Controllers\DeploymentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\emailController;
 use App\Http\Controllers\employeeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MechanicController;
@@ -20,6 +21,7 @@ use App\Mail\OrderShipped;
 use App\Mail\sendImage;
 use Doctrine\DBAL\Driver\Middleware;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -146,12 +148,10 @@ Route::group(['middleware'=>['userAge']],function(){
 
  //Login Registration
 // Route::get('create',[studentTeacherController::class,'create'])->name('user.create');
-// Route::post('/',[studentTeacherController::class,'store'])->name('User.store');  
+// Route::post('/',[stu dentTeacherController::class,'store'])->name('User.store'); 
 // Route::get('login',[studentTeacherController::class,'login'])->name('login');
 // Route::post('login',[studentTeacherController::class,'isValid'])->name('user.login');
-Route::group(['prefix'=>'user','middleware'=>['auth']],function(){
 
-});
 
 //Request Response
 
@@ -160,16 +160,16 @@ Route::get('reqres',[requestresponseController::class,'index']);
 
 //Send Mail 
 
-Route::get('send-mail',function()
-{
-    $mailData = [
-        'name' => "test Mail",
-        'dob' => '12/03/2023',
-    ];
+// Route::get('send-mail',function()
+// {
+//     $mailData = [
+//         'name' => "test Mail",
+//         'dob' => '12/03/2023',
+//     ];
 
-    Mail::to("hello@example.com")->send(new OrderShipped($mailData));
-    dd("Mail Sended..");
-});
+//     Mail::to("hello@example.com")->send(new OrderShipped($mailData));
+//     dd("Mail Sended..");
+// });
 
 Route::get('send-image',function()
 {
@@ -183,21 +183,49 @@ Route::get('send-image',function()
     dd("Mail Sended..");
 });
 
+Route::get('send-mail',[emailController::class,'sendEmail']);
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::group(['prefix'=>'user'],function()
+{
+    //Login Registration
+    Route::get('create',[emailController::class,'create'])->name('user.create');
+    Route::post('/',[emailController::class,'store'])->name('user.store'); 
+    Route::get('login',[emailController::class,'login'])->name('user.login');
+    Route::post('login',[emailController::class,'isValid'])->name('user.varifry');
+});
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::resource('employee',employeeController::class);
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+Route::get('verifyemail/{hash}',function($token){
+    return $token;
+})->name('user.token');
 
-// require __DIR__.'/auth.php';
+Route::get("hello/{id}",function($id){
+    return $id;
+});
+
+
+Route::resource('employee',employeeController::class);
+
+
+
+
+
+Auth::routes(['verify'=>true]);
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('employee',employeeController::class);
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
