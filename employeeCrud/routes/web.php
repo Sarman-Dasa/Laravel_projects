@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name("home");
 
 
 //Employee Controller
@@ -158,7 +158,7 @@ Route::group(['middleware'=>['userAge']],function(){
 Route::get('reqres',[requestresponseController::class,'index']);
 
 
-//Send Mail 
+//-----------------------------------// Send Mail //------------------------------// 
 
 // Route::get('send-mail',function()
 // {
@@ -170,7 +170,7 @@ Route::get('reqres',[requestresponseController::class,'index']);
 //     Mail::to("hello@example.com")->send(new OrderShipped($mailData));
 //     dd("Mail Sended..");
 // });
-
+//-----------------------------------// Send Mail with Attachment //------------------------------// 
 Route::get('send-image',function()
 {
     $userData = [
@@ -185,20 +185,22 @@ Route::get('send-image',function()
 
 Route::get('send-mail',[emailController::class,'sendEmail']);
 
-
+//-----------------------------------// Login Registration //------------------------------// 
 Route::group(['prefix'=>'user'],function()
 {
     //Login Registration
     Route::get('create',[emailController::class,'create'])->name('user.create');
     Route::post('/',[emailController::class,'store'])->name('user.store'); 
-    Route::get('login',[emailController::class,'login'])->name('user.login');
-    Route::post('login',[emailController::class,'isValid'])->name('user.varifry');
+    Route::get('login/create',[emailController::class,'login'])->name('user.login');
+    Route::post('login',[emailController::class,'isValidUser'])->name('user.varifry');
 });
 
+//-----------------------------------// Verify  Mail //------------------------------// 
+// Route::get('verifyemail/{hash}',function($token){
+//     return $token;
+// })->name('user.token');
 
-Route::get('verifyemail/{hash}',function($token){
-    return $token;
-})->name('user.token');
+Route::get("verifyemail/{token}",[emailController::class,'verifyEmail'])->name('email.verify');
 
 Route::get("hello/{id}",function($id){
     return $id;
@@ -217,15 +219,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get("logout",[emailController::class,'logOut'])->name('user.logout');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::resource('employee',employeeController::class);
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::resource('employee',employeeController::class);
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__.'/auth.php';
