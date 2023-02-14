@@ -5,7 +5,7 @@
             data-bs-whatever="@getbootstrap">Add user Detaile</button>
     </div> --}}
 
-    <form action="{{ route('user.login') }}" method="POST">
+    <form action="{{ route('user.varifry') }}" method="POST">
         @csrf
         <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="false">
             <div class="modal-dialog modal-md">
@@ -15,18 +15,29 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" id="close" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
+                        <span class="text-success d-block">
+                            @if (Session::has('success'))
+                                {{Session::get('success')}}
+                            @endif
+                        </span>
                         <div class="form-group">
-                            <label for="">User Name</label>
-                            <input type="text" class="form-control" id="dname" name="name"
-                                aria-describedby="emailHelp" placeholder="Enter User name">
+                            <label for="">User Email</label>
+                            <input type="email" class="form-control" id="dname" name="email"
+                                aria-describedby="emailHelp" placeholder="Enter Email">
                         </div>
                         <div class="form-group">
                             <label for="">Password</label>
                             <input type="password" name="password" id="" class="form-control" placeholder="Enter Password">
                         </div>
-                        
+                        <div class="form-group"> 
+                            <span class="text-danger">
+                            @if (Session::has('error'))
+                                {{Session::get('error')}}
+                            @endif
+                            </span>
+                        </div>
                         <div class="modal-footer">
+                            <a href="{{ route('user.forgotpassword') }}" class="btn btn-danger"> Forgot password</a>
                             <button type="button" id="close" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             <input type="submit"  value="Login" class="btn btn-info">
                         </div>

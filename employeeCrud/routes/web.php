@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name("home");
 
 
 //Employee Controller
@@ -158,7 +158,7 @@ Route::group(['middleware'=>['userAge']],function(){
 Route::get('reqres',[requestresponseController::class,'index']);
 
 
-//Send Mail 
+//-----------------------------------// Send Mail //------------------------------// 
 
 // Route::get('send-mail',function()
 // {
@@ -170,12 +170,12 @@ Route::get('reqres',[requestresponseController::class,'index']);
 //     Mail::to("hello@example.com")->send(new OrderShipped($mailData));
 //     dd("Mail Sended..");
 // });
-
+//-----------------------------------// Send Mail with Attachment //------------------------------// 
 Route::get('send-image',function()
 {
     $userData = [
         'name' => "my name",
-        'city' => 'Surat',
+        'ciqty' => 'Surat',
         'image' => '/app/images/1675662544.jpg',
     ];
 
@@ -185,24 +185,29 @@ Route::get('send-image',function()
 
 Route::get('send-mail',[emailController::class,'sendEmail']);
 
-
+//-----------------------------------// Login Registration //------------------------------// 
 Route::group(['prefix'=>'user'],function()
 {
-    //Login Registration
     Route::get('create',[emailController::class,'create'])->name('user.create');
     Route::post('/',[emailController::class,'store'])->name('user.store'); 
-    Route::get('login',[emailController::class,'login'])->name('user.login');
-    Route::post('login',[emailController::class,'isValid'])->name('user.varifry');
+    Route::get('login/create',[emailController::class,'login'])->name('user.login');
+    Route::post('login',[emailController::class,'isValidUser'])->name('user.varifry');
+
+   
+
+    Route::get("forgotPassword",[emailController::class,'forgotPasword'])->name('user.forgotpassword');
+    Route::post("forgotpassword",[emailController::class,'checkValidEmail'])->name("user.checkValidEmail");
+    Route::get("resetPasword",[emailController::class,'resetPasswordDataFill'])->name("user.resetPasword");
+    Route::post('resetPasword',[emailController::class,'setNewPassword'])->name('user.setnewpassword');
 });
 
+Route::get("verifyemail/{token}",[emailController::class,'verifyEmail'])->name('email.verify');
+Route::get("logout",[emailController::class,'logOut'])->name('user.logout');
+//-----------------------------------// Verify  Mail //------------------------------// 
+// Route::get('verifyemail/{hash}',function($token){
+//     return $token;
+// })->name('user.token');
 
-Route::get('verifyemail/{hash}',function($token){
-    return $token;
-})->name('user.token');
-
-Route::get("hello/{id}",function($id){
-    return $id;
-});
 
 
 Route::resource('employee',employeeController::class);

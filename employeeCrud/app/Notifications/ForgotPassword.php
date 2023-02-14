@@ -6,19 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Routing\Route;
 
-class VeriFyEmail extends Notification
+class ForgotPassword extends Notification
 {
     use Queueable;
-
-    public $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
+    public $user;
     public function __construct($user)
     {
         $this->user = $user;
@@ -41,14 +39,15 @@ class VeriFyEmail extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
+
     public function toMail($notifiable)
     {
-        
-        $token = $this->user['email_verify_token'];
+        $token = $this->user->token;
+        $email = $this->user->email;
         return (new MailMessage)
-                    ->line('Verify Account!')
-                    ->action('Verify Email', route('email.verify',$token))
-                    ->line('Thank you for using our application!');
+                    ->line('You are receiving this email because we received a password reset request for your account.')
+                    ->action('Reset Password', route('user.resetPasword',['token'=>$token,'email'=>$email]))
+                    ->line('If you did not request a password reset, no further action is required.');
     }
 
     /**
