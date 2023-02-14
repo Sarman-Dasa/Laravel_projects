@@ -5,7 +5,7 @@
             data-bs-whatever="@getbootstrap">Add user Detaile</button>
     </div> --}}
 
-    <form action="{{ route('user.login') }}" method="POST">
+    <form action="{{ route('user.varifry') }}" method="POST">
         @csrf
         <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="false">
             <div class="modal-dialog modal-md">
@@ -17,9 +17,9 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="">User Name</label>
-                            <input type="text" class="form-control" id="dname" name="name"
-                                aria-describedby="emailHelp" placeholder="Enter User name">
+                            <label for="">User Email</label>
+                            <input type="text" class="form-control" id="dname" name="email"
+                                aria-describedby="emailHelp" placeholder="Enter Email">
                         </div>
                         <div class="form-group">
                             <label for="">Password</label>
