@@ -18,6 +18,11 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('employee.index')}}">Show Data</a>
           </li>
+          @auth
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('user.logout')}}">logout</a>
+              </li>
+            @endauth
         </ul>
       </div>
     </div>
