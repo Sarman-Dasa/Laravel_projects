@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\sendmyData;
+use App\Models\PasswordReset;
 // use App\Mail\verifyEmail;
 use App\Models\User;
+use App\Notifications\ForgotPassword;
 use Exception;
 use GuzzleHttp\Psr7\Message;
 use App\Notifications\VeriFyEmail;
@@ -52,18 +54,17 @@ class emailController extends Controller
 
     public function verifyEmail($token)
     {
-       // return $token ?? "Not Work";
-      
-            //session()->forget('token');
             $user = User::where('email_verify_token',$token);
-           // return $user;
-            $user->update([
-                'email_verified_at'=>now(),
-                'status' => 1,
-                'email_verify_token' => '',    
-            ]);
-            //return Auth::user()->name;
-            return redirect()->route('user.login');  
+            if($user)
+            {
+                $user->update([
+                    'email_verified_at'=>now(),
+                    'status' => 1,
+                    'email_verify_token' => '',    
+                ]);
+                return redirect()->route('user.login'); 
+            }
+            
     }
 
     public function login()
@@ -77,7 +78,7 @@ class emailController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect("employee");
         } else {
-            return redirect('/login')->with('error', 'Invalid Email address or Password');
+            return redirect()->route('user.login')->with('error', 'Invalid Email address or Password');
         }
     }
 
@@ -86,5 +87,64 @@ class emailController extends Controller
         session()->flush();
         Auth::logout();
         return redirect("/");
+    }
+
+    public function forgotPasword()
+    {
+        return view("emails.forgotPassword");
+    }
+
+    public function checkValidEmail(Request $request)
+    {
+        $email = $request->email;
+        $user = User::where('email',$email)->first();
+        if($user)
+        {
+            $token = Str::random(64);
+            $data1 = PasswordReset::updateOrCreate(
+            ['email'=>$email],
+            [
+                'email'=>$email,
+                'token'=>$token,
+                'created_at'=>now()
+            ]);
+            $user['token'] = $token;
+           $user->notify(new ForgotPassword($user));
+           return redirect()->route('user.forgotpassword')->with('success',"Check your mail box!");
+        }
+        else
+        {
+            return redirect()->route('user.forgotpassword')->with('error',"Email Address can't match!!! try again");
+        }
+        
+    }
+
+    public function resetPasswordDataFill(Request $request){
+        
+        $resetData = PasswordReset::where('token',$request->token)->get();
+        if(isset($request->token) && count($resetData) > 0){
+            $data = User::where('email',$request->email)->first();
+            $data['token'] = $request->token;
+            return view('emails.newPasword',compact('data'));
+        }
+    }
+    public function setNewPassword(Request $request)
+    {
+        $request->validate([
+            'password'              => 'required|digits:8',
+            'confirmPassword'      => 'required|same:password',
+        ]);
+        $token =  PasswordReset::where('token',$request->token)->get();
+        if(count($token) > 0)
+        {
+            $user = User::where('email',$request->email);
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+            return redirect()->route('user.login')->with('success','password reset successfully.');
+        }
+        else{
+            return redirect()->route('user.resetPasword')->with('error','This password reset token is invalid');
+        }
     }
 }
