@@ -15,7 +15,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" id="close" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
+                        <span class="text-success d-block">
+                            @if (Session::has('success'))
+                                {{Session::get('success')}}
+                            @endif
+                        </span>
                         <div class="form-group">
                             <label for="">User Email</label>
                             <input type="email" class="form-control" id="dname" name="email"
@@ -25,8 +29,15 @@
                             <label for="">Password</label>
                             <input type="password" name="password" id="" class="form-control" placeholder="Enter Password">
                         </div>
-                        
+                        <div class="form-group"> 
+                            <span class="text-danger">
+                            @if (Session::has('error'))
+                                {{Session::get('error')}}
+                            @endif
+                            </span>
+                        </div>
                         <div class="modal-footer">
+                            <a href="{{ route('user.forgotpassword') }}" class="btn btn-danger"> Forgot password</a>
                             <button type="button" id="close" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             <input type="submit"  value="Login" class="btn btn-info">
                         </div>
