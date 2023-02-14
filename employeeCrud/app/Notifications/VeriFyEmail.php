@@ -43,10 +43,11 @@ class VeriFyEmail extends Notification
      */
     public function toMail($notifiable)
     {
+        
         $token = $this->user['email_verify_token'];
         return (new MailMessage)
-                    ->line('VeriFy Account!')
-                    ->action('Verify Email', url('verifyemail?hash'.$token))
+                    ->line('Verify Account!')
+                    ->action('Verify Email', route('email.verify',$token))
                     ->line('Thank you for using our application!');
     }
 
