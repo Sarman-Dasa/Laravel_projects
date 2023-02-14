@@ -18,7 +18,7 @@
 
                         <div class="form-group">
                             <label for="">User Email</label>
-                            <input type="text" class="form-control" id="dname" name="email"
+                            <input type="email" class="form-control" id="dname" name="email"
                                 aria-describedby="emailHelp" placeholder="Enter Email">
                         </div>
                         <div class="form-group">
