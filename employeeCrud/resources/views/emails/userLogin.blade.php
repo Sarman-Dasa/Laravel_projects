@@ -1,5 +1,4 @@
-@extends('layout.main')
-@section('content')
+@include('layout.link')
     {{-- <div class="content text-center mb-4">
         <button type="button" id="btn" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#login"
             data-bs-whatever="@getbootstrap">Add user Detaile</button>
@@ -23,11 +22,21 @@
                         <div class="form-group">
                             <label for="">User Email</label>
                             <input type="email" class="form-control" id="dname" name="email"
-                                aria-describedby="emailHelp" placeholder="Enter Email">
+                                aria-describedby="emailHelp" value="{{old('email')}}" placeholder="Enter Email">
+                                <span class="text-danger">
+                                    @error('email')
+                                        {{$message}}
+                                    @enderror
+                                </span>
                         </div>
                         <div class="form-group">
                             <label for="">Password</label>
                             <input type="password" name="password" id="" class="form-control" placeholder="Enter Password">
+                            <span class="text-danger">
+                                @error('password')
+                                    {{$message}}
+                                @enderror
+                            </span>
                         </div>
                         <div class="form-group"> 
                             <span class="text-danger">
@@ -50,8 +59,8 @@
         $(document).ready(function () {
             $('#login').modal('show');
             $(document).on("click","#close",function(){
-                history.back();
+                var url = "{{route('home')}}";
+                location.href = url;
             });
         });
     </script>
-@endsection
