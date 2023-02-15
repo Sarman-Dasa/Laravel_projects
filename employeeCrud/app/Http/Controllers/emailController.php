@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+
 class emailController extends Controller
 {
     public function sendEmail()
@@ -48,10 +50,12 @@ class emailController extends Controller
         ]);
         $request['password'] = Hash::make($request->password);
         $request['email_verify_token'] = Str::random(64);
+        $domain = URL::to('/');
         $user = User::create($request->all());
         $user['email_verify_token'];
+        $user['domain'] = $domain;
         $user->notify(new VeriFyEmail($user));
-        //SendVerifyMailJob::dispatch($user)->delay(now()->addSeconds(2));
+       // SendVerifyMailJob::dispatch($user)->delay(now()->addSeconds(2));
         return redirect()->route('success.msg')->with('success',"Registration SuccessFully,Check Your Mail Inbox. To send a Verify Email message");
     }
 
