@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendVerifyMailJob;
 use App\Mail\sendmyData;
 use App\Models\PasswordReset;
 // use App\Mail\verifyEmail;
@@ -50,21 +51,32 @@ class emailController extends Controller
         $user = User::create($request->all());
         $user['email_verify_token'];
         $user->notify(new VeriFyEmail($user));
+        //SendVerifyMailJob::dispatch($user)->delay(now()->addSeconds(2));
+        return redirect()->route('success.msg')->with('success',"Registration SuccessFully,Check Your Mail Inbox. To send a Verify Email message");
     }
 
     public function verifyEmail($token)
     {
-            $user = User::where('email_verify_token',$token);
+            $user = User::where('email_verify_token',$token)->first();
+           // return $user;
             if($user)
             {
-                $user->update([
-                    'email_verified_at'=>now(),
-                    'status' => 1,
-                    'email_verify_token' => '',    
-                ]);
-                return redirect()->route('user.login'); 
+                // $user->update([
+                //     'email_verified_at'=>now(),
+                //     'status' => 1,
+                //     'email_verify_token' => '',   
+                // ]);
+                $user->email_verified_at = now();
+                $user->status = 1;
+                $user->email_verify_token = "";
+                $user->save();
+                //return $user;
+                return redirect()->route('success.msg')->with('success',"Email Verify Successfully");
             }
-            
+            else
+            {
+                return redirect()->route('error.msg')->with('error',"Your Mail Already Verify Your are eligible to login");
+            }
     }
 
     public function login()
@@ -74,14 +86,17 @@ class emailController extends Controller
 
     public function isValidUser(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+
+        $request->validate([
+            'email'     => 'required|email',
+            'password'  => 'required'
+        ]);
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password,'status' => 1])){
             return redirect("employee");
         } else {
-            return redirect()->route('user.login')->with('error', 'Invalid Email address or Password');
+            return redirect()->route('error.msg')->with('error', 'Invalid Email address or Password');
         }
     }
-
     public function logOut()
     {
         session()->flush();
