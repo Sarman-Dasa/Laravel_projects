@@ -46,12 +46,9 @@ class VeriFyEmail extends Notification
     {
         
         $token = $this->user['email_verify_token'];
-        $domain =$this->user['domain'];
-        $url = $domain.'/verifyemail/'.$token;
         return (new MailMessage)
                     ->line('Verify Account!')
-                   // ->action('Verify Email', route('email.verify',$token))
-                   ->action("Verify Email",$url)
+                    ->action('Verify Email', route('email.verify',$token))
                     ->line('Thank you for using our application!');
     }
 
