@@ -17,8 +17,11 @@ use App\Http\Controllers\SingerController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\studentTeacherController;
+use App\Jobs\SendTextMailJob;
 use App\Mail\OrderShipped;
 use App\Mail\sendImage;
+use App\Mail\QueueMailSend;
+use App\Models\Student;
 use Doctrine\DBAL\Driver\Middleware;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,13 +44,13 @@ Route::get('/', function () {
 })->name("home");
 
 
-//Employee Controller
+//--------------------//Employee Controller//-----------------//
 //Route::resource('employee',employeeController::class);
 
-Route::group(['middleware'=>['auth','verified']],function(){
+Route::group(['middleware'=>['auth']],function(){
    
 });
-
+Route::resource('employee',employeeController::class);
 Route::get('employee/deletedData/restore',[employeeController::class,'deletedData'])->name('employee.restoreDataShow');
 Route::get('employee/deletedData/restore/{id}',[employeeController::class,'restoreData'])->name('employee.restoreData');
 Route::delete('employee/deletedData/delete/{id}',[employeeController::class,'permanentDelete'])->name('employee.permanentDelete');
@@ -55,18 +58,16 @@ Route::delete('employee/deletedData/delete/{id}',[employeeController::class,'per
 // Department Controller
 Route::resource('department',departmentController::class);
 
-Route::get('mechanic',[MechanicController::class,'addMechanic']);
 
+Route::get('mechanic',[MechanicController::class,'addMechanic']);
 Route::get('car/{id}',[CarController::class,'addCar']);
 Route::get('ownwer/{id}',[OwnerController::class,'addOwner']);
-
 Route::get('showoner/{id}',[OwnerController::class,'showOwner']);
 
-Route::get('project',[ProjectController::class,'addProject']);
 
+Route::get('project',[ProjectController::class,'addProject']);
 Route::get('language/{id}',[LanguageController::class,'addLanguage']);
 Route::get('addDeployement/{id}',[DeploymentController::class,'addDeployement']);
-
 Route::get('showProjectDeployement/{id}',[DeploymentController::class,'showData']);
 
 
@@ -122,7 +123,6 @@ Route::get('student/show/{id}',[studentTeacherController::class,'showStudentSubj
 
 //Route For Middleware 
 
-
 //check user Age for Global
 Route::get('users', function () {
     return view('middlewareFile.checkAge');
@@ -132,8 +132,7 @@ Route::get('users', function () {
 //     return "Hello";
 // })->name('checkAge');
 
-//GroupMiddleware 
-
+//---------------------//GroupMiddleware//-------------------------//
 Route::group(['middleware'=>['userAge']],function(){
     Route::POST('users', function () {
         return "Hello from GroupMiddleware";
@@ -154,7 +153,6 @@ Route::group(['middleware'=>['userAge']],function(){
 
 
 //Request Response
-
 Route::get('reqres',[requestresponseController::class,'index']);
 
 
@@ -178,7 +176,6 @@ Route::get('send-image',function()
         'ciqty' => 'Surat',
         'image' => '/app/images/1675662544.jpg',
     ];
-
     Mail::to("hello@example.com")->send(new sendImage($userData));
     dd("Mail Sended..");
 });
@@ -201,36 +198,56 @@ Route::group(['prefix'=>'user'],function()
     Route::post('resetPasword',[emailController::class,'setNewPassword'])->name('user.setnewpassword');
 });
 
-Route::get("verifyemail/{token}",[emailController::class,'verifyEmail'])->name('email.verify');
-Route::get("logout",[emailController::class,'logOut'])->name('user.logout');
 //-----------------------------------// Verify  Mail //------------------------------// 
-// Route::get('verifyemail/{hash}',function($token){
-//     return $token;
-// })->name('user.token');
+Route::get("verifyemail/{token}",[emailController::class,'verifyEmail'])->name('email.verify');
+//-----------------------------------// LogOut //------------------------------// 
+Route::get("logout",[emailController::class,'logOut'])->name('user.logout');
 
 
+//-------------------------//Success Message//------------------------------------------//
+Route::get("success",function(){
+    return view('messages.success');
+})->name('success.msg');
 
-Route::resource('employee',employeeController::class);
+//-------------------------//Error Message//------------------------------------------//
+Route::get("error",function(){
+    return view('messages.error');
+})->name('error.msg');
 
+//---------------------------//mail Send using Job & Queues //--------------------------//
 
+//   using dispatch method
+// Route::get('sendJobmail',function(){
+   
+//   dispatch(function(){
+//     $user = Student::find(3);
+//     Mail::to($user->student_email)->send(new QueueMailSend($user));
+//   })->delay(now()->addSecond(5));
+//    dd("Mail Send");
+// });
 
+Route::get('sendJobmail',function(){
+    $user = Student::find(5);
+    SendTextMailJob::dispatch($user)->delay(now()->addSeconds(5));
+    dd("send..");
+});
 
 
 Auth::routes(['verify'=>true]);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::resource('employee',employeeController::class);
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::resource('employee',employeeController::class);
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__.'/auth.php';
