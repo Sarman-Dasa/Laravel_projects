@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\URL;
 
 class VeriFyEmail extends Notification
 {
@@ -45,9 +46,12 @@ class VeriFyEmail extends Notification
     {
         
         $token = $this->user['email_verify_token'];
+        $domain =$this->user['domain'];
+        $url = $domain.'/verifyemail/'.$token;
         return (new MailMessage)
                     ->line('Verify Account!')
-                    ->action('Verify Email', route('email.verify',$token))
+                   // ->action('Verify Email', route('email.verify',$token))
+                   ->action("Verify Email",$url)
                     ->line('Thank you for using our application!');
     }
 
