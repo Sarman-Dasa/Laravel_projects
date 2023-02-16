@@ -1,11 +1,13 @@
 <?php
 
+use App\helpers\Custom;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\departmentController;
 use App\Http\Controllers\DeploymentController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\emailController;
 use App\Http\Controllers\employeeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\OwnerController;
@@ -43,7 +45,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name("home");
 
-
+Route::get("/home",function(){
+    return view('home');
+});
 //--------------------//Employee Controller//-----------------//
 //Route::resource('employee',employeeController::class);
 
@@ -233,6 +237,29 @@ Route::get('sendJobmail',function(){
 });
 
 
+//---------------------------//Helper class Route//--------------------------//
+// base on function
+Route::get("helper",function(){
+    echo message('Custome helper class');
+});
+
+//base on class
+
+Route::get("custom",function(){
+    return Custom::message("Rahul");
+});
+
+//---------------------------//File Storge Route//--------------------------//
+Route::group(['middleware'=>['auth']],function(){
+    Route::controller(ImageController::class)->group(function(){
+        Route::get('uploadAssignment/create','create')->name('image.create');
+        Route::post('uploadAssignment','store')->name('image.store');
+        Route::get("uploadAssignment",'index')->name('image.index');
+        Route::get("uploadAssignment/{id}",'show')->name('image.show');
+        Route::post('download',"imageDownload")->name('image.download');
+        Route::delete('uploadAssignment/{id}',"imageDelete")->name('image.delete');
+    });
+});
 Auth::routes(['verify'=>true]);
 
 // Route::get('/', function () {
