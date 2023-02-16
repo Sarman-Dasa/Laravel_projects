@@ -6,9 +6,10 @@ use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
-
+use App\Traits\queryTrait;
 class employeeController extends Controller
 {
+    use queryTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +18,7 @@ class employeeController extends Controller
     public function index()
     {
         $data = Employee::with('department')->get();
+        //$data =  $this->getEmployeeData(2);
         $departmentName = Department::all();
        // return $data;
          return view('displayData',['data'=>$data,'departmentName'=>$departmentName]);
