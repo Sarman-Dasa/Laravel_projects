@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MessageNotification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('event',function(){
+    event(new MessageNotification("Hello, print message without page refresh!!"));
+});
+
+Route::get('listen',function(){
+    return view('listen');
 });
