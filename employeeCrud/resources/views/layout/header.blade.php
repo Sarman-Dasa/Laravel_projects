@@ -18,12 +18,23 @@
           <li class="nav-item">
             <a class="nav-link" href="{{route('employee.index')}}">Show Data</a>
           </li>
-          @auth
-              <li class="nav-item">
-                <a class="nav-link" href="{{route('user.logout')}}">logout</a>
-              </li>
-            @endauth
+          <li class="nav-item">
+            <a class="nav-link" href="{{route('image.create')}}">Add Assignment</a>
+          </li>
+        
         </ul>
+       <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle text-success" data-bs-toggle="dropdown" aria-expanded="false">
+             Welcome, {{ Auth::user()->name }}
+          </a>
+           <ul class="dropdown-menu">
+            <li>  @auth
+              <li class="nav-item">
+                <a class="dropdown-item" href="{{route('user.logout')}}">logout</a>
+              </li>
+          @endauth</li>
+          </ul>
+       </li>
       </div>
     </div>
 </nav>
