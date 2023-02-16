@@ -55,7 +55,7 @@
                         @endforeach
                     </tr>
                     <tr>
-                        <th colspan="11" class="text-center table-dark">Total {{count($data)}} Employee(s) </th>
+                        <th colspan="12" class="text-center table-dark">Total {{count($data)}} Employee(s) </th>
                     </tr>
                 </tbody>
             </table>
