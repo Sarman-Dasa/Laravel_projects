@@ -96,7 +96,7 @@ class emailController extends Controller
             'password'  => 'required'
         ]);
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password,'status' => 1])){
-            return redirect("home");
+            return redirect()->route("main");
         } else {
             return redirect()->route('error.msg')->with('error', 'Invalid Email address or Password');
         }
