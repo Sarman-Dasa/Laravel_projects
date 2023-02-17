@@ -26,6 +26,7 @@ use App\Mail\QueueMailSend;
 use App\Models\Student;
 use Doctrine\DBAL\Driver\Middleware;
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,12 @@ Route::get('/', function () {
     return view('welcome');
 })->name("home");
 
-Route::get("/home",function(){
+Route::get("/main",function(){
+    return view('home');
+})->name("main");
+
+Route::get("/main/{locale}",function($locale){
+    App::setLocale($locale);
     return view('home');
 });
 //--------------------//Employee Controller//-----------------//
@@ -257,8 +263,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get("uploadAssignment",'index')->name('image.index');
         Route::get("uploadAssignment/{id}",'show')->name('image.show');
         Route::post('download',"imageDownload")->name('image.download');
-        Route::delete('uploadAssignment/{id}',"imageDelete")->name('image.delete');
-        Route::get("AllImages",'showAllImage')->name('image.allShow');
+        Route::delete('uploadAssignment/{id}',"imageDelete")->name('image.delete')->middleware('validUser');
+        Route::get("AllImages",'showAllImage')->name('image.allShow')->middleware('validUser');
+        Route::get('status/{id}','status')->name('status');
     });
 });
 Auth::routes(['verify'=>true]);
