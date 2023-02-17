@@ -69,4 +69,12 @@ class ImageController extends Controller
          $data->delete();
         return redirect()->route('image.index');
     }
+
+    public function showAllImage()
+    {   
+        $files = Storage::allFiles("public/Assignments");
+        $imageFile =  str_replace("public","/storage",$files);
+        return view('FileStorge.showAllFile',compact('imageFile'));
+      
+    }
 }
