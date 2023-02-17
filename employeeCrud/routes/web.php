@@ -258,6 +258,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get("uploadAssignment/{id}",'show')->name('image.show');
         Route::post('download',"imageDownload")->name('image.download');
         Route::delete('uploadAssignment/{id}',"imageDelete")->name('image.delete');
+        Route::get("AllImages",'showAllImage')->name('image.allShow');
     });
 });
 Auth::routes(['verify'=>true]);
