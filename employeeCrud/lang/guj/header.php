@@ -1,0 +1,12 @@
+<?php
+    return[
+        'home'         => 'ઘર',
+        'addEmployee'  => 'કર્મચારી ઉમેરો',
+        'restoreData'  => 'ડેટા પુનઃસ્થાપિત કરો',
+        'showData'     => 'ડેટા બતાવો',
+        'addassignment'=> 'સોંપણી ઉમેરો',
+        'showUser'     => 'વપરાશકર્તા બતાવો',
+        'welcome'      => 'સ્વાગત છે, :name',
+        'logout'       => 'લૉગ આઉટ'
+    ]
+?>
