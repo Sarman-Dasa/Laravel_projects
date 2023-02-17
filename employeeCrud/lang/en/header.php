@@ -1,0 +1,12 @@
+<?php
+    return[
+        'home'         => 'Home',
+        'addEmployee'  => 'Add Employee',
+        'restoreData'  => 'Restore Data',
+        'showData'     => 'Show Data',
+        'addassignment'=> 'Add Assignment',
+        'showUser'     => 'Show User',
+        'welcome'      => 'Welcome, :name',
+        'logout'       => 'logout'
+    ]
+?>
