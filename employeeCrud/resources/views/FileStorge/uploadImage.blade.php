@@ -1,5 +1,5 @@
-@extends('layout.main')
-@section('content')
+{{-- @extends('layout.main')
+@section('content') --}}
     <div class="contenier table table-secondary mt-5 mb-5">
         <div class="row">
             <div class="col-md-4 offset-md-4">
@@ -39,4 +39,4 @@
             </div>
         </div>
     </div>
-@endsection
+{{-- @endsection --}}

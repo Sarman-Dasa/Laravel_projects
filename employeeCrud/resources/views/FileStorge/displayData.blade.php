@@ -15,7 +15,9 @@
                     <th>Student Email</th>
                     <th>Submited Assignment </th>
                     <th>View Assignment</th>
+                    @if (Auth::user()->role == "Teacher")
                     <th>Status</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>

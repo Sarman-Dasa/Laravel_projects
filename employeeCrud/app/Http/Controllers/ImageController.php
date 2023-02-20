@@ -91,9 +91,14 @@ class ImageController extends Controller
         $imageFile = str_replace("public","/storage",$file);
         return view("FileStorge.showAllFile",compact('imageFile'));
     }
-
+    
     public function status($id)
     {
-        return $id;
+       $user = User::find($id);
+
+       $status = $user->status == 1 ? 0 : 1;
+       $user->status = $status;
+       $user->save();
+       return redirect()->route('success.msg')->with('success',"user " .$user->name." login status has been chnage.");
     }
 }
