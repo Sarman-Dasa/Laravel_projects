@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
 {
@@ -46,5 +47,23 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if($request->is('api/*'))
+        {
+            $boolean = Str::contains($e->getMessage(),'No query results');
+           // return response()->json(['data'=>$e->getMessage()]);
+            if($boolean)
+            {
+                return response()->json(['status'=>false,'message'=>'Data Not Found'],404);
+            }
+            else{
+                return response()->json(['status'=>false,'message'=>'Before login you can Access this page!!!'],500);
+            }
+            
+        }
+       
     }
 }
