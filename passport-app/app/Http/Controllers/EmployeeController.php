@@ -61,7 +61,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-       return response()->json(['Data'=>$employee]);
+       return response()->json(['status'=>true,'message'=>'Data Get Successfully','Data'=>$employee],200);
     }
 
     /**
