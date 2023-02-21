@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
@@ -24,7 +25,13 @@ class JetstreamServiceProvider extends ServiceProvider
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
+
+        //----------------// Add Owner Design blade File//----------------------//
+    //    Fortify::loginView(function(){
+    //         return view('CustomeView.login'); 
+    //    });
     }
+
 
     /**
      * Configure the permissions that are available within the application.
