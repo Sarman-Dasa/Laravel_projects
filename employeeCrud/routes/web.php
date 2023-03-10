@@ -156,7 +156,7 @@ Route::group(['middleware'=>['userAge']],function(){
  })->name('checkAge')->middleware('mwcheckAge');
 
  //Login Registration
-// Route::get('create',[studentTeacherController::class,'create'])->name('user.create');
+ //Route::get('create',[studentTeacherController::class,'create'])->name('user.create');
 // Route::post('/',[stu dentTeacherController::class,'store'])->name('User.store'); 
 // Route::get('login',[studentTeacherController::class,'login'])->name('login');
 // Route::post('login',[studentTeacherController::class,'isValid'])->name('user.login');
@@ -266,6 +266,8 @@ Route::group(['middleware'=>['auth']],function(){
         Route::delete('uploadAssignment/{id}',"imageDelete")->name('image.delete')->middleware('validUser');
         Route::get("AllImages",'showAllImage')->name('image.allShow')->middleware('validUser');
         Route::get('status/{id}','status')->name('status');
+        Route::get('edit/{id}','edit')->name('image.edit');
+        Route::patch('update/{image}','update')->name('image.update');
     });
 });
 Auth::routes(['verify'=>true]);
