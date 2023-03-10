@@ -5,16 +5,16 @@
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
-                    <th colspan="4" class="text-center table-dark">Assignment Data</th>
+                    <th colspan="5" class="text-center table-dark">Assignment Data</th>
                 </tr>
                 <tr class="table-info">
                     <th colspan="2">Student Name :: {{$data->name}}</th>
-                    <th colspan="2">Student Email :: {{$data->email}}</th>
+                    <th colspan="3">Student Email :: {{$data->email}}</th>
                 </tr>
                 <tr class="table-dark">
                     <th>Subject</th>
                     <th>Image</th>
-                    <th colspan="2" class="text-center">Action</th>
+                    <th colspan="3" class="text-center">Action</th>
                     
                 </tr>
                 </thead>
@@ -40,6 +40,12 @@
                                         @csrf
                                         @method('delete')
                                         <input type="submit" value="Delete" class="btn btn-info">
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="{{ route('image.edit',['id'=>$item->id])}}">
+                                        @csrf
+                                        <input type="submit" value="EDIT" class="btn btn-info">
                                     </form>
                                 </td>
                             </tr>
